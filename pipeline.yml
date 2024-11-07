@@ -1,28 +1,32 @@
 steps:
-
-- label: "build_golang_project"
-  key: "build_golang_project"
+- label: ":docker: Build Golang Project"
   plugins:
   - docker#v5.11.0:
-      image: "golang:1.18.0"
-      workdir: "/app"
-      command: ["cd", "hello", "go", "build"] # Array format
-  artifact_paths:
-  - "hello/hello"
+      image: "golang:1.18.0" # Docker image for building Go
+      workdir: "/app" # Sets the working directory to /app in the container
+  commands:
+  - cd hello && go build -o hello # Runs inside the Docker container
+  - buildkite-agent artifact upload "hello/hello" # Uploads binary as an artifact
 
-- block: "Give_your_name"
-  prompt: "Please enter your name:"
+- wait
+
+- label: ":pause_button: Enter Your Name"
+  type: block
+  prompt: "Please enter your name"
   fields:
   - text: "name"
     key: "user_name"
+    hint: "Enter your name"
     required: true
 
-- label: "run_program_with_user_input"
+- label: ":run: Execute Program"
   plugins:
   - docker#v5.11.0:
-      image: "golang:1.18.0"
+      image: "alpine:latest" # Use a lightweight image for running the binary
       workdir: "/app"
-      command: ["buildkite-agent", "artifact", "download", "hello/hello", "$(buildkite-agent meta-data get user_name)"] # Array format
-  depends_on: "build_golang_project"
-  artifact_paths:
-  - "hello/hello"
+  commands:
+  - buildkite-agent artifact download "hello/hello" . # Download binary
+  - chmod +x hello/hello # Ensure it's executable
+  - |
+    USER_NAME=$(buildkite-agent meta-data get "user_name") # Get user input
+    ./hello/hello "$USER_NAME" # Run the program with user's name
