@@ -22,7 +22,7 @@ steps:
 - label: ":run: Execute Program"
   plugins:
   - docker#v5.11.0:
-      image: "alpine:latest"
+      image: "golang:1.18.0"
       workdir: "/app"
   commands:
   - buildkite-agent artifact download "hello/hello" . # Download binary from artifact store
