@@ -25,6 +25,7 @@ steps:
   #     image: "golang:1.18.0"
   #     workdir: "/app"
   commands:
+  - go build
   - buildkite-agent artifact download "hello/hello" . # Download binary from artifact store
   - chmod +x hello/hello # Ensure binary is executable
   - |
