@@ -1,3 +1,37 @@
+# steps:
+# - label: ":docker: Build Golang Project"
+#   plugins:
+#   - docker#v5.11.0:
+#       image: "golang:1.18.0"
+#       workdir: "/app"
+#   commands:
+#   - cd hello && go build -o hello # Builds the binary inside Docker
+#   artifact_paths: "hello/hello" # Uploads the artifact from the host after Docker finishes
+
+# - wait
+
+# - label: ":pause_button: Enter Your Name"
+#   type: block
+#   prompt: "Please enter your name"
+#   fields:
+#   - text: "name"
+#     key: "user_name"
+#     hint: "Enter your name"
+#     required: true
+
+# - label: ":run: Execute Program"
+#   # plugins:
+#   # - docker#v5.11.0:
+#   #     image: "golang:1.18.0"
+#   #     workdir: "/app"
+#   commands:
+#   - buildkite-agent artifact download "hello/hello" . # Download binary from artifact store
+#   - chmod +x hello/hello # Ensure binary is executable
+#   - |
+#     USER_NAME=$(buildkite-agent meta-data get "user_name") # Get user input
+#     ./hello/hello "$USER_NAME" # Run the program with user's name
+
+
 steps:
 - label: ":docker: Build Golang Project"
   plugins:
@@ -5,8 +39,9 @@ steps:
       image: "golang:1.18.0"
       workdir: "/app"
   commands:
-  - cd hello && go build -o hello # Builds the binary inside Docker
-  artifact_paths: "hello/hello" # Uploads the artifact from the host after Docker finishes
+  - cd hello
+  - GOOS=linux GOARCH=amd64 go build -o hello # Set architecture and OS for compatibility
+  artifact_paths: "hello/hello" # Upload the binary after Docker finishes
 
 - wait
 
@@ -20,10 +55,6 @@ steps:
     required: true
 
 - label: ":run: Execute Program"
-  # plugins:
-  # - docker#v5.11.0:
-  #     image: "golang:1.18.0"
-  #     workdir: "/app"
   commands:
   - buildkite-agent artifact download "hello/hello" . # Download binary from artifact store
   - chmod +x hello/hello # Ensure binary is executable
