@@ -1,0 +1,28 @@
+steps:
+
+- label: "build_golang_project"
+  plugins:
+  - docker#v5.11.0:
+      image: "golang:1.18.0"
+      workdir: "/app"
+      command: ["go", "build", "-o", "hello/hello", "./hello"] # Array format
+  artifact_paths:
+  - "hello/hello"
+
+- block: "enter_name"
+  prompt: "Please enter your name:"
+  fields:
+  - text: "name"
+    key: "user_name"
+    required: true
+
+- label: "run_program_with_user_input"
+  plugins:
+  - docker#v5.11.0:
+      image: "golang:1.18.0"
+      workdir: "/app"
+      command: ["./hello/hello", "$(buildkite-agent meta-data get user_name)"] # Array format
+  depends_on:
+  - "build_golang_project"
+  artifact_paths:
+  - "hello/hello"
