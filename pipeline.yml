@@ -20,10 +20,10 @@ steps:
     required: true
 
 - label: ":run: Execute Program"
-  plugins:
-  - docker#v5.11.0:
-      image: "golang:1.18.0"
-      workdir: "/app"
+  # plugins:
+  # - docker#v5.11.0:
+  #     image: "golang:1.18.0"
+  #     workdir: "/app"
   commands:
   - buildkite-agent artifact download "hello/hello" . # Download binary from artifact store
   - chmod +x hello/hello # Ensure binary is executable
