@@ -22,7 +22,6 @@ steps:
       image: "golang:1.18.0"
       workdir: "/app"
       command: ["./hello/hello", "$(buildkite-agent meta-data get user_name)"] # Array format
-  depends_on:
-  - "build_golang_project"
+  depends_on: "build_golang_project"
   artifact_paths:
   - "hello/hello"
