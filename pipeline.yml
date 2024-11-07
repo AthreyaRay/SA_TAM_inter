@@ -1,6 +1,7 @@
 steps:
 
 - label: "build_golang_project"
+  key: "build_golang_project"
   plugins:
   - docker#v5.11.0:
       image: "golang:1.18.0"
