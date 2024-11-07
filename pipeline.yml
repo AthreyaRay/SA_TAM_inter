@@ -2,11 +2,11 @@ steps:
 - label: ":docker: Build Golang Project"
   plugins:
   - docker#v5.11.0:
-      image: "golang:1.18.0" # Docker image for building Go
-      workdir: "/app" # Sets the working directory to /app in the container
+      image: "golang:1.18.0"
+      workdir: "/app"
   commands:
-  - cd hello && go build -o hello # Runs inside the Docker container
-  - buildkite-agent artifact upload "hello/hello" # Uploads binary as an artifact
+  - cd hello && go build -o hello # Builds the binary inside Docker
+  artifact_paths: "hello/hello" # Uploads the artifact from the host after Docker finishes
 
 - wait
 
@@ -22,11 +22,11 @@ steps:
 - label: ":run: Execute Program"
   plugins:
   - docker#v5.11.0:
-      image: "alpine:latest" # Use a lightweight image for running the binary
+      image: "alpine:latest"
       workdir: "/app"
   commands:
-  - buildkite-agent artifact download "hello/hello" . # Download binary
-  - chmod +x hello/hello # Ensure it's executable
+  - buildkite-agent artifact download "hello/hello" . # Download binary from artifact store
+  - chmod +x hello/hello # Ensure binary is executable
   - |
     USER_NAME=$(buildkite-agent meta-data get "user_name") # Get user input
     ./hello/hello "$USER_NAME" # Run the program with user's name
