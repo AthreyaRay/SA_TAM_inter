@@ -1,0 +1,8 @@
+[34m
+* Datadog Agent install script v1.36.0
+[0m
+[31mThis script does not support installing on the Mac.
+
+Please use the 1-step script available at https://app.datadoghq.com/account/settings/agent/latest?platform=macos.[0m
+curl: (22) The requested URL returned error: 403
+Unable to send telemetry

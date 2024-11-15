@@ -16,7 +16,7 @@ steps:
   fields:
   - text: "name"
     key: "user_name"
-    hint: "Enter your name"
+    hint: "Enter your name my friend"
     required: true
 
 - label: ":run: Execute Program"
@@ -29,7 +29,6 @@ steps:
   - chmod +x hello/hello # Ensure binary is executable
   - USER_NAME=$(buildkite-agent meta-data get user_name) # Get user input
   - ./hello/hello "$$USER_NAME" # Run the program with user's name
-
 
 # steps:
 # - label: ":docker: Build Golang Project"
