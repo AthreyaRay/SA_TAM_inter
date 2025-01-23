@@ -58,4 +58,4 @@ steps:
 #   - chmod +x hello/hello # Ensure binary is executable
 #   - |
 #     USER_NAME=$(buildkite-agent meta-data get "user_name") # Get user input
-#     ./hello/hello "$USER_NAME" # Run the program with user's name
+#     ./hello/hello "$USER_NAME" # Run the program with user's namessss
