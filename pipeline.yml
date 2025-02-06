@@ -28,7 +28,7 @@ steps:
   - buildkite-agent artifact download "hello/hello" . # Download binary from artifact store
   - chmod +x hello/hello # Ensure binary is executable
   - USER_NAME=$(buildkite-agent meta-data get user_name) # Get user input
-  - ./hello/hello "$$USER_NAME" # Run the program with user's name test
+  - ./hello/hello "$$USER_NAME" # Run the program with user's name testsssss
 
 # steps:
 # - label: ":docker: Build Golang Project"
